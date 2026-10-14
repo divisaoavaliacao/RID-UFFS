@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Sistema RID - UFFS (Resolução 238/2026)</title>
+  <title>Sistema RID - UFFS (Resolução 239/2026)</title>
 
   <!-- Bootstrap 4 & FontAwesome -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
@@ -23,7 +23,7 @@
     body { background: var(--uffs-page); color: var(--uffs-text); font-family: "Fira Sans", "Segoe UI", Tahoma, Geneva, Verdana, sans-serif; padding-bottom: 96px; }
     .header-uffs { background: var(--uffs-green-darker); color: #fff; padding: 16px 0; border-bottom: 5px solid var(--uffs-green); box-shadow: 0 4px 14px rgba(7,32,19,.12); }
     .header-uffs-content { display: flex; align-items: center; gap: 22px; text-align: left; }
-    .uffs-logo-box { background: #fff; border-radius: 7px; padding: 8px 12px; display: flex; align-items: center; justify-content: center; flex: 0 0 auto; box-shadow: 0 2px 6px rgba(0,0,0,.16); }
+    .uffs-logo-box { background: transparent; border-radius: 0; padding: 0; display: flex; align-items: center; justify-content: center; flex: 0 0 auto; box-shadow: none; }
     .uffs-logo-box img { display: block; width: 205px; max-width: 100%; height: auto; }
     .header-uffs-title { min-width: 0; }
     .header-uffs-title h1 { margin: 0 0 4px; color: #fff; font-size: 1.35rem; line-height: 1.25; font-weight: 700; }
@@ -66,7 +66,7 @@
   <header class="header-uffs mb-4">
     <div class="container header-uffs-content">
       <div class="uffs-logo-box">
-        <img src="logo-uffs-verde.png" alt="Universidade Federal da Fronteira Sul — UFFS">
+        <img src="logo-verde.png" alt="Universidade Federal da Fronteira Sul — UFFS">
       </div>
       <div class="header-uffs-title">
         <h1>Relatório Individual Docente (RID)</h1>
@@ -164,7 +164,7 @@
             <div class="form-group mb-0">
               <label for="desc-ensino"><strong>Descrição breve para identificar esta ocorrência:</strong></label>
               <textarea id="desc-ensino" class="form-control" rows="2" maxlength="600" placeholder="Descreva a atividade (ex.: componente, curso, banca ou projeto). Você pode incluir várias ocorrências do mesmo item, uma de cada vez."></textarea>
-              <small class="form-text text-muted">Informe a quantidade total de atividades realizadas no período avaliativo, somando as ocorrências correspondentes ao item.</small>
+              <small class="form-text text-muted">Informe a quantidade total de atividades realizadas no período avaliativo, somando as ocorrências correspondentes ao item. Não há limite para a quantidade de atividades ou para o total informado. O período avaliativo de 24 meses define apenas quais atividades podem ser consideradas; não limita o número de registros nem a quantidade acumulada.</small>
             </div>
           </div>
         </div>
@@ -192,7 +192,7 @@
             <div class="form-group mb-0">
               <label for="desc-pesquisa"><strong>Descrição breve para identificar esta ocorrência:</strong></label>
               <textarea id="desc-pesquisa" class="form-control" rows="2" maxlength="600" placeholder="Descreva a atividade/projeto (ex.: título do projeto, grupo ou publicação). Você pode incluir várias ocorrências do mesmo item, uma de cada vez."></textarea>
-              <small class="form-text text-muted">Informe a quantidade total de atividades realizadas no período avaliativo, somando as ocorrências correspondentes ao item.</small>
+              <small class="form-text text-muted">Informe a quantidade total de atividades realizadas no período avaliativo, somando as ocorrências correspondentes ao item. Não há limite para a quantidade de atividades ou para o total informado. O período avaliativo de 24 meses define apenas quais atividades podem ser consideradas; não limita o número de registros nem a quantidade acumulada.</small>
             </div>
           </div>
         </div>
@@ -220,7 +220,7 @@
             <div class="form-group mb-0">
               <label for="desc-extensao"><strong>Descrição breve para identificar esta ocorrência:</strong></label>
               <textarea id="desc-extensao" class="form-control" rows="2" maxlength="600" placeholder="Descreva a ação/projeto de extensão ou cultura. Você pode incluir várias ocorrências do mesmo item, uma de cada vez."></textarea>
-              <small class="form-text text-muted">Informe a quantidade total de atividades realizadas no período avaliativo, somando as ocorrências correspondentes ao item.</small>
+              <small class="form-text text-muted">Informe a quantidade total de atividades realizadas no período avaliativo, somando as ocorrências correspondentes ao item. Não há limite para a quantidade de atividades ou para o total informado. O período avaliativo de 24 meses define apenas quais atividades podem ser consideradas; não limita o número de registros nem a quantidade acumulada.</small>
             </div>
           </div>
         </div>
@@ -248,7 +248,7 @@
             <div class="form-group mb-0">
               <label for="desc-formacao"><strong>Descrição breve para identificar esta ocorrência:</strong></label>
               <textarea id="desc-formacao" class="form-control" rows="2" maxlength="600" placeholder="Informe curso, programa ou atividade de formação. Você pode incluir várias ocorrências do mesmo item, uma de cada vez."></textarea>
-              <small class="form-text text-muted">Informe a quantidade total de atividades realizadas no período avaliativo, somando as ocorrências correspondentes ao item.</small>
+              <small class="form-text text-muted">Informe a quantidade total de atividades realizadas no período avaliativo, somando as ocorrências correspondentes ao item. Não há limite para a quantidade de atividades ou para o total informado. O período avaliativo de 24 meses define apenas quais atividades podem ser consideradas; não limita o número de registros nem a quantidade acumulada.</small>
             </div>
           </div>
         </div>
@@ -276,7 +276,7 @@
             <div class="form-group mb-0">
               <label for="desc-gestao"><strong>Descrição breve para identificar esta ocorrência:</strong></label>
               <textarea id="desc-gestao" class="form-control" rows="2" maxlength="600" placeholder="Informe a função, comissão, colegiado ou atividade de gestão. Você pode incluir várias ocorrências do mesmo item, uma de cada vez."></textarea>
-              <small class="form-text text-muted">Informe a quantidade total de atividades realizadas no período avaliativo, somando as ocorrências correspondentes ao item.</small>
+              <small class="form-text text-muted">Informe a quantidade total de atividades realizadas no período avaliativo, somando as ocorrências correspondentes ao item. Não há limite para a quantidade de atividades ou para o total informado. O período avaliativo de 24 meses define apenas quais atividades podem ser consideradas; não limita o número de registros nem a quantidade acumulada.</small>
             </div>
           </div>
         </div>
