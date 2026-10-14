@@ -5,8 +5,7 @@ const categoriasRID = [
   { id: "pesquisa", nome: "2. ATIVIDADES DE PESQUISA" },
   { id: "extensao", nome: "3. ATIVIDADES DE EXTENSÃO E CULTURA" },
   { id: "formacao", nome: "4. ATIVIDADES DE FORMAÇÃO" },
-  { id: "gestao", nome: "5. ATIVIDADES DE ADMINISTRAÇÃO E GESTÃO UNIVERSITÁRIA" },
-  { id: "didatico", nome: "6. DESEMPENHO DIDÁTICO" }
+  { id: "gestao", nome: "5. ATIVIDADES DE ADMINISTRAÇÃO E GESTÃO UNIVERSITÁRIA" }
 ];
 
 const catalogoRID = [
@@ -134,8 +133,7 @@ const catalogoRID = [
   { id: "5_1_22", cod: "5.1.22", desc: "Membro suplente de órgão colegiado do campus", fator: 2, unit: "pontos/semestre", cat: "gestao", calc: "semester" },
   { id: "5_1_23", cod: "5.1.23", desc: "Representação sindical", fator: 10, unit: "pontos/semestre", cat: "gestao", calc: "semester" },
   { id: "5_1_24", cod: "5.1.24", desc: "Representação como docente da UFFS em comissões ou conselhos externos à instituição", fator: 2, unit: "pontos/semestre", cat: "gestao", calc: "semester" },
-  { id: "5_1_25", cod: "5.1.25", desc: "Professor colaborador das coordenações adjuntas de laboratório", fator: 2, unit: "pontos/(laboratório·semestre)", cat: "gestao", calc: "project_semester" },
-  { id: "6_1_1", cod: "6.1.1", desc: "Desempenho didático avaliado com a participação do corpo discente (nota de 0 a 10)", fator: 6, unit: "pontos/nota", cat: "didatico", calc: "score" }
+  { id: "5_1_25", cod: "5.1.25", desc: "Professor colaborador das coordenações adjuntas de laboratório", fator: 2, unit: "pontos/(laboratório·semestre)", cat: "gestao", calc: "project_semester" }
 ];
 
 let atividadesSelecionadas = [];
