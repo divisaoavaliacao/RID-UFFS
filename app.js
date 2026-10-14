@@ -105,10 +105,10 @@ const catalogoRID = [
   { id: "4_1_3", cod: "4.1.3", desc: "Participação como aluno regularmente matriculado em programa de pós-graduação lato sensu", fator: 10, unit: "pontos/semestre", cat: "formacao", calc: "semester" },
   { id: "4_1_4", cod: "4.1.4", desc: "Participação em programa de estágio pós-doutoral, com afastamento para capacitação pela UFFS", fator: 45, unit: "pontos/semestre", cat: "formacao", calc: "semester" },
   { id: "4_1_5", cod: "4.1.5", desc: "Participação em programa de estágio pós-doutoral", fator: 28, unit: "pontos/semestre", cat: "formacao", calc: "semester" },
-  { id: "4_1_6", cod: "4.1.6", desc: "Participação em cursos de formação docente promovidos pela UFFS (máximo de 6 formações)", fator: 2, unit: "pontos/curso", cat: "formacao", calc: "count6" },
-  { id: "4_1_7", cod: "4.1.7", desc: "Participação em palestras (máximo de 10)", fator: 0.5, unit: "ponto/palestra", cat: "formacao", calc: "count10" },
-  { id: "4_1_8", cod: "4.1.8", desc: "Participação em seminários (máximo de 10)", fator: 0.5, unit: "ponto/seminário", cat: "formacao", calc: "count10" },
-  { id: "4_1_9", cod: "4.1.9", desc: "Participação em cursos não abarcados pelo item 4.1.6 (máximo de 10)", fator: 0.5, unit: "ponto/curso", cat: "formacao", calc: "count10" },
+  { id: "4_1_6", cod: "4.1.6", desc: "Participação em cursos de formação docente promovidos pela UFFS", fator: 2, unit: "pontos/curso", cat: "formacao", calc: "count" },
+  { id: "4_1_7", cod: "4.1.7", desc: "Participação em palestras", fator: 0.5, unit: "ponto/palestra", cat: "formacao", calc: "count" },
+  { id: "4_1_8", cod: "4.1.8", desc: "Participação em seminários", fator: 0.5, unit: "ponto/seminário", cat: "formacao", calc: "count" },
+  { id: "4_1_9", cod: "4.1.9", desc: "Participação em cursos não abarcados pelo item 4.1.6", fator: 0.5, unit: "ponto/curso", cat: "formacao", calc: "count" },
   { id: "5_1_1", cod: "5.1.1", desc: "Reitor ou vice-reitor", fator: 45, unit: "pontos/semestre", cat: "gestao", calc: "semester" },
   { id: "5_1_2", cod: "5.1.2", desc: "Pró-Reitor", fator: 45, unit: "pontos/semestre", cat: "gestao", calc: "semester" },
   { id: "5_1_3", cod: "5.1.3", desc: "Diretor de campus", fator: 45, unit: "pontos/semestre", cat: "gestao", calc: "semester" },
@@ -137,15 +137,12 @@ const catalogoRID = [
 ];
 
 let atividadesSelecionadas = [];
-const MAX_SEMESTRES = 4;
 const categoriaIds = categoriasRID.map(c => c.id);
 const esc = v => String(v ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 function pontosAtividade(item) {
   const q = Number(item.qtd) || 0;
   if (item.calc === "hours") return (q / 15) * item.fator;
   if (item.calc === "score") return Math.min(10, Math.max(0, q)) * item.fator;
-  if (item.calc === "count6") return Math.min(6, q) * item.fator;
-  if (item.calc === "count10") return Math.min(10, q) * item.fator;
   return q * item.fator;
 }
 document.addEventListener("DOMContentLoaded", () => {
@@ -175,12 +172,9 @@ function adicionarAtividade(cat) {
   if (!itemInfo) { alert("Selecione uma atividade."); return; }
   if (!Number.isFinite(qtd) || (qtd<=0 && itemInfo.calc !== "score")) { alert("Informe uma quantidade válida."); return; }
   if (itemInfo.calc === "score" && qtd>10) { alert("A nota de desempenho didático deve estar entre 0 e 10."); return; }
-  if (["semester","project_semester"].includes(itemInfo.calc) && (!Number.isInteger(qtd) || qtd>MAX_SEMESTRES)) { alert("O período de avaliação abrange até 4 semestres. Informe uma quantidade entre 1 e 4 semestres para esta atividade."); return; }
-  if (["count6"].includes(itemInfo.calc) && qtd>6) { alert("O limite previsto para este item é de 6 participações."); return; }
-  if (["count10"].includes(itemInfo.calc) && qtd>10) { alert("O limite previsto para este item é de 10 participações."); return; }
   const descricao=(descInput?.value||"").trim();
   if (!descricao) { alert("Descreva brevemente a atividade para identificá-la no RID."); descInput?.focus(); return; }
-  atividadesSelecionadas.push({uid: `${Date.now()}_${Math.random().toString(36).slice(2,8)}`,id:itemInfo.id,cod:itemInfo.cod,desc:itemInfo.desc,fator:itemInfo.fator,unit:itemInfo.unit,cat:itemInfo.cat,calc:itemInfo.calc,qtd,descricao,arquivoPDF:null});
+  atividadesSelecionadas.push({uid: `${Date.now()}_${Math.random().toString(36).slice(2,8)}`,id:itemInfo.id,cod:itemInfo.cod,desc:itemInfo.desc,fator:itemInfo.fator,unit:itemInfo.unit,cat:itemInfo.cat,calc:itemInfo.calc,qtd,descricao,arquivosPDF:[]});
   select.value=""; qtdInput.value=""; if(descInput) descInput.value="";
   renderizarTabelaCategoria(cat); calcularTotais();
 }
@@ -188,12 +182,24 @@ function removerAtividade(uid,cat) { atividadesSelecionadas=atividadesSelecionad
 function editarAtividade(uid,cat) {
   const item=atividadesSelecionadas.find(i=>i.uid===uid); if(!item)return;
   const desc=prompt(`Descrição breve da atividade:\n${item.cod} ${item.desc}`,item.descricao||""); if(desc===null)return;
-  const q=prompt(`Quantidade / horas / semestres para ${item.cod}`,String(item.qtd)); if(q===null)return;
+  const q=prompt(`Quantidade total / horas para ${item.cod}`,String(item.qtd)); if(q===null)return;
   const qtd=parseFloat(q.replace(',','.'));
-  if(!desc.trim()||!Number.isFinite(qtd)||(qtd<=0&&item.calc!=="score")||(["semester","project_semester"].includes(item.calc)&&(!Number.isInteger(qtd)||qtd>4))||(item.calc==="score"&&qtd>10)|| (item.calc==="count6"&&qtd>6)||(item.calc==="count10"&&qtd>10)){alert("Descrição ou quantidade inválida. Confira os limites aplicáveis.");return;}
+  if(!desc.trim()||!Number.isFinite(qtd)||(qtd<=0&&item.calc!=="score")||(item.calc==="score"&&qtd>10)){alert("Descrição ou quantidade inválida. Confira a descrição e a quantidade informada.");return;}
   item.descricao=desc.trim();item.qtd=qtd;renderizarTabelaCategoria(cat);calcularTotais();
 }
-function salvarComprovante(uid,input) { const item=atividadesSelecionadas.find(i=>i.uid===uid); if(!item||!input.files?.[0])return; const f=input.files[0]; if(f.type!=="application/pdf"&&!f.name.toLowerCase().endsWith(".pdf")){alert("Selecione um arquivo PDF.");input.value="";return;} item.arquivoPDF=f; const label=document.getElementById(`arquivo-${uid}`);if(label)label.textContent=f.name; }
+function salvarComprovante(uid,input) {
+ const item=atividadesSelecionadas.find(i=>i.uid===uid); if(!item||!input.files?.length)return;
+ const selecionados=Array.from(input.files);
+ const invalidos=selecionados.filter(f=>f.type!=="application/pdf"&&!f.name.toLowerCase().endsWith(".pdf"));
+ if(invalidos.length){alert("Todos os comprovantes devem estar em formato PDF. Nenhum arquivo desta seleção foi adicionado.");input.value="";return;}
+ if(!Array.isArray(item.arquivosPDF))item.arquivosPDF=item.arquivoPDF?[item.arquivoPDF]:[];
+ const existentes=new Set(item.arquivosPDF.map(f=>`${f.name}|${f.size}|${f.lastModified}`));
+ selecionados.forEach(f=>{const chave=`${f.name}|${f.size}|${f.lastModified}`;if(!existentes.has(chave)){item.arquivosPDF.push(f);existentes.add(chave);}});
+ const label=document.getElementById(`arquivo-${uid}`);if(label)label.textContent=item.arquivosPDF.length?item.arquivosPDF.map(f=>f.name).join(", "):"Nenhum comprovante adicionado";
+ const botao=document.getElementById(`btn-arquivo-${uid}`);if(botao)botao.innerHTML='<i class="fas fa-plus-circle"></i> Adicionar mais arquivos';
+ input.value="";
+}
+function abrirSeletorComprovantes(uid){const input=document.getElementById(`input-arquivo-${uid}`);if(input)input.click();}
 function renderizarTodasAsTabelas(){categoriaIds.forEach(renderizarTabelaCategoria);}
 function compararCodigos(a,b){const aa=a.replace(/\.$/,"").split(".").map(Number),bb=b.replace(/\.$/,"").split(".").map(Number);for(let i=0;i<Math.max(aa.length,bb.length);i++){const d=(aa[i]||0)-(bb[i]||0);if(d)return d;}return 0;}
 function renderizarTabelaCategoria(cat){
@@ -201,7 +207,7 @@ function renderizarTabelaCategoria(cat){
  const itens=atividadesSelecionadas.filter(i=>i.cat===cat).sort((a,b)=>compararCodigos(a.cod,b.cod));
  if(!itens.length){container.innerHTML='<div class="alert alert-light text-center border text-muted">Nenhuma atividade adicionada nesta categoria.</div>';return;}
  let html='<div class="table-responsive"><table class="table table-bordered table-sm table-hover mt-3"><thead class="thead-light"><tr><th>Atividade / descrição informada</th><th>Fator</th><th>Qtd./horas/semestres</th><th>Pontos</th><th>Comprovante</th><th>Ações</th></tr></thead><tbody>';
- itens.forEach(i=>{const pts=pontosAtividade(i);html+=`<tr><td><strong>${esc(i.cod)} ${esc(i.desc)}</strong><div class="small text-muted mt-1">${esc(i.descricao)}</div></td><td class="small">${i.fator} ${esc(i.unit)}</td><td>${i.qtd}</td><td class="font-weight-bold text-success">${pts.toFixed(2)}</td><td><input type="file" class="form-control-file" accept="application/pdf,.pdf" onchange="salvarComprovante('${i.uid}',this)"><small id="arquivo-${i.uid}" class="text-muted">${i.arquivoPDF?esc(i.arquivoPDF.name):"Sem arquivo"}</small></td><td class="text-center text-nowrap"><button class="btn btn-outline-primary btn-sm" onclick="editarAtividade('${i.uid}','${cat}')" title="Editar"><i class="fas fa-edit"></i></button> <button class="btn btn-outline-danger btn-sm" onclick="removerAtividade('${i.uid}','${cat}')" title="Excluir"><i class="fas fa-trash"></i></button></td></tr>`;});
+ itens.forEach(i=>{const pts=pontosAtividade(i);const arquivos=i.arquivosPDF||(i.arquivoPDF?[i.arquivoPDF]:[]);const temArquivos=arquivos.length>0;html+=`<tr><td><strong>${esc(i.cod)} ${esc(i.desc)}</strong><div class="small text-muted mt-1">${esc(i.descricao)}</div></td><td class="small">${i.fator} ${esc(i.unit)}</td><td>${i.qtd}</td><td class="font-weight-bold text-success">${pts.toFixed(2)}</td><td><input type="file" id="input-arquivo-${i.uid}" class="d-none" accept="application/pdf,.pdf" multiple onchange="salvarComprovante('${i.uid}',this)"><button type="button" id="btn-arquivo-${i.uid}" class="btn btn-sm btn-outline-success mb-2" onclick="abrirSeletorComprovantes('${i.uid}')"><i class="fas fa-plus-circle"></i> ${temArquivos?'Adicionar mais arquivos':'Adicionar comprovantes'}</button><div><small id="arquivo-${i.uid}" class="text-muted">${temArquivos?arquivos.map(f=>esc(f.name)).join(", "):"Nenhum comprovante adicionado"}</small></div><small class="text-muted d-block mt-1">Somente arquivos PDF. Você pode adicionar arquivos em etapas.</small></td><td class="text-center text-nowrap"><button class="btn btn-outline-primary btn-sm" onclick="editarAtividade('${i.uid}','${cat}')" title="Editar"><i class="fas fa-edit"></i></button> <button class="btn btn-outline-danger btn-sm" onclick="removerAtividade('${i.uid}','${cat}')" title="Excluir"><i class="fas fa-trash"></i></button></td></tr>`;});
  container.innerHTML=html+'</tbody></table></div>';
 }
 function calcularTotais(){let total=0;atividadesSelecionadas.forEach(i=>total+=pontosAtividade(i));const el=document.getElementById("pontuacao-total-geral");if(el)el.innerText=total.toFixed(2);const n=document.getElementById("quantidade-atividades");if(n)n.innerText=atividadesSelecionadas.length;}
@@ -216,7 +222,7 @@ async function gerarRIDOficialComBrasao(){
   // Gera a tabela primeiro para descobrir quantas páginas o RID ocupa; depois refaz com referências corretas aos anexos.
   async function renderRID(primeiraPaginaAnexo){
    let pagina=primeiraPaginaAnexo;const lista=[];
-   for(const i of ordenadas){let info="Não anexado";if(i.arquivoPDF){try{const d=await PDFDocument.load(await i.arquivoPDF.arrayBuffer());const n=d.getPageCount();info=n?`p. ${pagina}${n>1?`–${pagina+n-1}`:""}`:"PDF vazio";pagina+=n;}catch(e){info="Arquivo inválido";}}lista.push({...i,paginaInfo:info});}
+   for(const i of ordenadas){let info="Não anexado";const arquivos=i.arquivosPDF|| (i.arquivoPDF?[i.arquivoPDF]:[]);if(arquivos.length){const refs=[];try{for(const arquivo of arquivos){const d=await PDFDocument.load(await arquivo.arrayBuffer());const n=d.getPageCount();if(n){refs.push(n>1?`p. ${pagina}–${pagina+n-1}`:`p. ${pagina}`);pagina+=n;}}info=refs.length?refs.join("; "):"PDF vazio";}catch(e){info="Arquivo inválido";}}lista.push({...i,paginaInfo:info});}
    const grupos=categoriasRID.map(c=>({key:c.id,titulo:c.nome}));let blocos="";
    grupos.forEach(g=>{const arr=lista.filter(i=>i.cat===g.key);let sub=0;blocos+=`<h4 class="group-title">${esc(g.titulo)}</h4>`;if(!arr.length){blocos+='<p class="muted">Nenhuma atividade declarada.</p>';return;}blocos+='<table class="rid-table"><thead><tr><th>Atividade e descrição</th><th>Qtd.</th><th>Pontos</th><th>Comprovante</th></tr></thead><tbody>';arr.forEach(i=>{const pts=pontosAtividade(i);sub+=pts;blocos+=`<tr><td><b>${esc(i.cod)} ${esc(i.desc)}</b><div class="desc">${esc(i.descricao)}</div></td><td class="center">${i.qtd}</td><td class="center">${pts.toFixed(2)}</td><td class="center">${esc(i.paginaInfo)}</td></tr>`;});blocos+='</tbody></table>';blocos+=`<p class="subtotal">Subtotal: ${sub.toFixed(2)} pontos</p>`;});
    const el=document.createElement("div");el.id="rid-pdf-render";el.style.cssText="width:190mm;padding:0;background:#fff;color:#212529;font-family:Arial,sans-serif;font-size:9pt;";
@@ -225,7 +231,7 @@ async function gerarRIDOficialComBrasao(){
   }
   let ridDoc=await renderRID(1);const totalPaginasRID=ridDoc.getPageCount();ridDoc=await renderRID(totalPaginasRID+1);
   const finalDoc=await PDFDocument.create();const ridPages=await finalDoc.copyPages(ridDoc,ridDoc.getPageIndices());ridPages.forEach(p=>finalDoc.addPage(p));
-  for(const i of ordenadas){if(!i.arquivoPDF)continue;try{const doc=await PDFDocument.load(await i.arquivoPDF.arrayBuffer());const pages=await finalDoc.copyPages(doc,doc.getPageIndices());pages.forEach(p=>finalDoc.addPage(p));}catch(e){throw new Error(`Não foi possível ler o comprovante de ${i.cod} — ${i.desc}: ${i.arquivoPDF.name}`);}}
+  for(const i of ordenadas){const arquivos=i.arquivosPDF|| (i.arquivoPDF?[i.arquivoPDF]:[]);for(const arquivo of arquivos){try{const doc=await PDFDocument.load(await arquivo.arrayBuffer());const pages=await finalDoc.copyPages(doc,doc.getPageIndices());pages.forEach(p=>finalDoc.addPage(p));}catch(e){throw new Error(`Não foi possível ler o comprovante de ${i.cod} — ${i.desc}: ${arquivo.name}`);}}}
   // Numeração de todas as páginas, RID e anexos, no rodapé.
   const font=await finalDoc.embedFont(StandardFonts.Helvetica);const pages=finalDoc.getPages();pages.forEach((pg,idx)=>{const {width}=pg.getSize();pg.drawText(`Página ${idx+1} de ${pages.length}`,{x:width-105,y:18,size:9,font,color:rgb(0.25,0.25,0.25)});});
   const bytes=await finalDoc.save();const blob=new Blob([bytes],{type:"application/pdf"});const url=URL.createObjectURL(blob);const a=document.createElement("a");a.href=url;a.download=`RID_${siape.replace(/[^\w-]/g,"")||"DOCENTE"}.pdf`;a.click();setTimeout(()=>URL.revokeObjectURL(url),1500);
