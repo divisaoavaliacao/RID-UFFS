@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Sistema RID - UFFS (Resolução 238/CONSUNI/UFFS/2026)</title>
+  <title>Sistema RID - UFFS (Resolução 239/2026)</title>
 
   <!-- Bootstrap 4 & FontAwesome -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
@@ -40,7 +40,7 @@
     <!-- Identificação do Docente -->
     <div class="card mb-4 shadow-sm">
       <div class="card-header bg-dark text-white font-weight-bold">
-        <i class="fas fa-user-edit"></i> Dados de Identificação
+        <i class="fas fa-user-edit"></i> Dados de Identificação do Docente
       </div>
       <div class="card-body">
         <div class="row">
@@ -121,9 +121,9 @@
               </div>
             </div>
             <div class="form-group mb-0">
-              <label for="desc-ensino"><strong>Descrição breve para identificar esta atividade:</strong></label>
+              <label for="desc-ensino"><strong>Descrição breve para identificar esta ocorrência:</strong></label>
               <textarea id="desc-ensino" class="form-control" rows="2" maxlength="600" placeholder="Descreva a atividade (ex.: componente, curso, banca ou projeto). Você pode incluir várias ocorrências do mesmo item, uma de cada vez."></textarea>
-              <small class="form-text text-muted">Cada inclusão gera um registro independente. Para atividades diferentes vinculadas ao mesmo item, registre cada atividade separadamente. Quando se tratar de atividades do mesmo tipo realizadas ao longo do período avaliativo, informe a quantidade total correspondente à soma dos quatro semestres</small>
+              <small class="form-text text-muted">Informe a quantidade total de atividades realizadas no período avaliativo, somando as ocorrências correspondentes ao item.</small>
             </div>
           </div>
         </div>
@@ -149,9 +149,9 @@
               </div>
             </div>
             <div class="form-group mb-0">
-              <label for="desc-pesquisa"><strong>Descrição breve para identificar esta atividade:</strong></label>
+              <label for="desc-pesquisa"><strong>Descrição breve para identificar esta ocorrência:</strong></label>
               <textarea id="desc-pesquisa" class="form-control" rows="2" maxlength="600" placeholder="Descreva a atividade/projeto (ex.: título do projeto, grupo ou publicação). Você pode incluir várias ocorrências do mesmo item, uma de cada vez."></textarea>
-              <small class="form-text text-muted">Cada inclusão gera um registro independente. Para atividades diferentes vinculadas ao mesmo item, registre cada atividade separadamente. Quando se tratar de atividades do mesmo tipo realizadas ao longo do período avaliativo, informe a quantidade total correspondente à soma dos quatro semestres</small>
+              <small class="form-text text-muted">Informe a quantidade total de atividades realizadas no período avaliativo, somando as ocorrências correspondentes ao item.</small>
             </div>
           </div>
         </div>
@@ -177,9 +177,9 @@
               </div>
             </div>
             <div class="form-group mb-0">
-              <label for="desc-extensao"><strong>Descrição breve para identificar esta atividade:</strong></label>
+              <label for="desc-extensao"><strong>Descrição breve para identificar esta ocorrência:</strong></label>
               <textarea id="desc-extensao" class="form-control" rows="2" maxlength="600" placeholder="Descreva a ação/projeto de extensão ou cultura. Você pode incluir várias ocorrências do mesmo item, uma de cada vez."></textarea>
-              <small class="form-text text-muted">Cada inclusão gera um registro independente. Para atividades diferentes vinculadas ao mesmo item, registre cada atividade separadamente. Quando se tratar de atividades do mesmo tipo realizadas ao longo do período avaliativo, informe a quantidade total correspondente à soma dos quatro semestres</small>
+              <small class="form-text text-muted">Informe a quantidade total de atividades realizadas no período avaliativo, somando as ocorrências correspondentes ao item.</small>
             </div>
           </div>
         </div>
@@ -197,7 +197,7 @@
                 <select id="select-formacao" class="form-control"></select>
               </div>
               <div class="col-md-3 form-group">
-                <label><strong>Qtd / Semestres / Cursos:</strong></label>
+                <label><strong>Quantidade total / horas / cursos:</strong></label>
                 <input type="number" id="qtd-formacao" class="form-control" min="0.1" step="0.1" placeholder="Ex: 1">
               </div>
               <div class="col-md-2 form-group d-flex align-items-end">
@@ -205,9 +205,9 @@
               </div>
             </div>
             <div class="form-group mb-0">
-              <label for="desc-formacao"><strong>Descrição breve para identificar esta atividade:</strong></label>
+              <label for="desc-formacao"><strong>Descrição breve para identificar esta ocorrência:</strong></label>
               <textarea id="desc-formacao" class="form-control" rows="2" maxlength="600" placeholder="Informe curso, programa ou atividade de formação. Você pode incluir várias ocorrências do mesmo item, uma de cada vez."></textarea>
-              <small class="form-text text-muted">Cada inclusão gera um registro independente. Para atividades diferentes vinculadas ao mesmo item, registre cada atividade separadamente. Quando se tratar de atividades do mesmo tipo realizadas ao longo do período avaliativo, informe a quantidade total correspondente à soma dos quatro semestres</small>
+              <small class="form-text text-muted">Informe a quantidade total de atividades realizadas no período avaliativo, somando as ocorrências correspondentes ao item.</small>
             </div>
           </div>
         </div>
@@ -225,7 +225,7 @@
                 <select id="select-gestao" class="form-control"></select>
               </div>
               <div class="col-md-3 form-group">
-                <label><strong>Qtd / Semestres:</strong></label>
+                <label><strong>Quantidade total:</strong></label>
                 <input type="number" id="qtd-gestao" class="form-control" min="0.1" step="0.1" placeholder="Ex: 1">
               </div>
               <div class="col-md-2 form-group d-flex align-items-end">
@@ -233,9 +233,9 @@
               </div>
             </div>
             <div class="form-group mb-0">
-              <label for="desc-gestao"><strong>Descrição breve para identificar esta atividade:</strong></label>
+              <label for="desc-gestao"><strong>Descrição breve para identificar esta ocorrência:</strong></label>
               <textarea id="desc-gestao" class="form-control" rows="2" maxlength="600" placeholder="Informe a função, comissão, colegiado ou atividade de gestão. Você pode incluir várias ocorrências do mesmo item, uma de cada vez."></textarea>
-              <small class="form-text text-muted">Cada inclusão gera um registro independente. Para atividades diferentes vinculadas ao mesmo item, registre cada atividade separadamente. Quando se tratar de atividades do mesmo tipo realizadas ao longo do período avaliativo, informe a quantidade total correspondente à soma dos quatro semestres</small>
+              <small class="form-text text-muted">Informe a quantidade total de atividades realizadas no período avaliativo, somando as ocorrências correspondentes ao item.</small>
             </div>
           </div>
         </div>
@@ -253,7 +253,7 @@
     <div class="container d-flex justify-content-between align-items-center">
       <div>
         <span class="h5 mb-0">Pontuação total: <strong id="pontuacao-total-geral" class="text-warning">0.00</strong> pts</span>
-        <small class="d-block text-light">Atividades cadastradas: <span id="quantidade-atividades">0</span> · Período esperado: 24 meses / 4 semestres</small>
+        <small class="d-block text-light">Atividades cadastradas: <span id="quantidade-atividades">0</span> · Período: 24 meses / 4 semestres</small>
       </div>
       <div>
         <button id="btn-gerar-pdf" class="btn btn-success font-weight-bold" onclick="gerarRIDOficialComBrasao()">
